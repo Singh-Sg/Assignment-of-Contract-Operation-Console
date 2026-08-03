@@ -1,0 +1,281 @@
+{
+  "info": {
+    "name": "Contract Operations Console API",
+    "description": "Postman collection covering all backend REST endpoints for the Contract Operations Console.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "version": "1.0.0"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:8000",
+      "type": "string"
+    },
+    {
+      "key": "organizationId",
+      "value": "2",
+      "type": "string"
+    },
+    {
+      "key": "contractId",
+      "value": "1",
+      "type": "string"
+    },
+    {
+      "key": "page",
+      "value": "1",
+      "type": "string"
+    },
+    {
+      "key": "pageSize",
+      "value": "10",
+      "type": "string"
+    },
+    {
+      "key": "limit",
+      "value": "10",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "Organizations",
+      "description": "Organization CRUD endpoints.",
+      "item": [
+        {
+          "name": "Create Organization",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/organizations",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "organizations"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Sample Organization\",\n  \"code\": \"ORG002\",\n  \"email\": \"contact@org2.example.com\",\n  \"phone\": \"+1-555-0102\",\n  \"address\": \"456 Second St, City\",\n  \"status\": \"ACTIVE\"\n}"
+            }
+          }
+        },
+        {
+          "name": "List Organizations",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/organizations",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "organizations"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Contracts",
+      "description": "Contract management endpoints.",
+      "item": [
+        {
+          "name": "Create Contract",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/contracts",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "contracts"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"organization_id\": 2,\n  \"field_data\": {\n    \"client_name\": \"ACME Corp\",\n    \"po_ref_no\": \"PO-12345\",\n    \"po_date\": \"2026-08-03\",\n    \"payment_terms\": \"Net 30\",\n    \"delivery_terms\": \"FOB\",\n    \"items\": [\n      {\n        \"description\": \"Consulting Services\",\n        \"quantity\": 10,\n        \"quantity_unit\": \"hours\",\n        \"unit_price\": 150,\n        \"pricing_unit\": \"hour\",\n        \"total\": 1500\n      },\n      {\n        \"description\": \"Support Package\",\n        \"quantity\": 1,\n        \"unit_price\": 500,\n        \"total\": 500\n      }\n    ]\n  }\n}"
+            }
+          }
+        },
+        {
+          "name": "List Contracts",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/contracts?organization_id={{organizationId}}&limit={{limit}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "contracts"
+              ],
+              "query": [
+                {
+                  "key": "organization_id",
+                  "value": "{{organizationId}}"
+                },
+                {
+                  "key": "limit",
+                  "value": "{{limit}}"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Contract by ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/contracts/{{contractId}}?organization_id={{organizationId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "contracts",
+                "{{contractId}}"
+              ],
+              "query": [
+                {
+                  "key": "organization_id",
+                  "value": "{{organizationId}}"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Update Contract",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/contracts/{{contractId}}?organization_id={{organizationId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "contracts",
+                "{{contractId}}"
+              ],
+              "query": [
+                {
+                  "key": "organization_id",
+                  "value": "{{organizationId}}"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"field_data\": {\n    \"client_name\": \"ACME Corp Updated\",\n    \"po_ref_no\": \"PO-12345\",\n    \"po_date\": \"2026-08-03\",\n    \"payment_terms\": \"Net 45\",\n    \"delivery_terms\": \"FOB\",\n    \"items\": [\n      {\n        \"description\": \"Consulting Services\",\n        \"quantity\": 12,\n        \"quantity_unit\": \"hours\",\n        \"unit_price\": 150,\n        \"pricing_unit\": \"hour\",\n        \"total\": 1800\n      }\n    ]\n  }\n}"
+            }
+          }
+        },
+        {
+          "name": "Update Contract Status",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/contracts/{{contractId}}/status?organization_id={{organizationId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "contracts",
+                "{{contractId}}",
+                "status"
+              ],
+              "query": [
+                {
+                  "key": "organization_id",
+                  "value": "{{organizationId}}"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"status\": \"FINALIZED\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Get Contract Events",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/contracts/{{contractId}}/events?organization_id={{organizationId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "contracts",
+                "{{contractId}}",
+                "events"
+              ],
+              "query": [
+                {
+                  "key": "organization_id",
+                  "value": "{{organizationId}}"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Delete Contract",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/contracts/{{contractId}}?organization_id={{organizationId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "contracts",
+                "{{contractId}}"
+              ],
+              "query": [
+                {
+                  "key": "organization_id",
+                  "value": "{{organizationId}}"
+                }
+              ]
+            }
+          }
+        }
+      ]
+    }
+  ]
+}
